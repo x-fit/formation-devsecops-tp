@@ -2,19 +2,20 @@ pipeline {
   agent any
 
   stages {
+    //---------------------------------------------- début stage -----------------------------------
       stage('Build Artifact') {
             steps {
               sh "mvn clean package -DskipTests=true"
               archive 'target/*.jar' //so that they can be downloaded later
             }
-        }   
+        }  
+    //----------------------------------------------
       stage('UNIT test & jacoco ') {
       steps {
         sh "mvn test"
       }
       }
-    }
-  //----------------------------------------------
+      //----------------------------------------------
       stage('Mutation Tests - PIT') {
       steps {
         catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
@@ -23,6 +24,8 @@ pipeline {
       }
     }
   //------------------------------
+    }
+
         post {
                 always {
                     junit 'target/surefire-reports/*.xml'
