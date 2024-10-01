@@ -18,11 +18,11 @@ pipeline {
       //----------------------------------------------
       stage('sonar maven ') {
       steps {
-        mvn clean verify sonar:sonar \
+        sh "mvn clean verify sonar:sonar \
   -Dsonar.projectKey=maven-jenkins-pipeline \
   -Dsonar.projectName='maven-jenkins-pipeline' \
   -Dsonar.host.url=http://172.206.215.37:9000 \
-  -Dsonar.token=sqp_721a5f14f11e7e1ebdf0988f4c42839092493b6d
+  -Dsonar.token=sqp_721a5f14f11e7e1ebdf0988f4c42839092493b6d"
       }
       }
     
