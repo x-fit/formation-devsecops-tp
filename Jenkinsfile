@@ -11,14 +11,6 @@ pipeline {
         }  
     //----------------------------------------------
 
-stage('Vulnerability Scan owasp - dependency-check') {
-   steps {
-	    catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-     		sh "mvn dependency-check:check"
-	    }
-		}
-}
-
  //-----------------------------------------------   
       stage('UNIT test & jacoco ') {
       steps {
@@ -26,17 +18,7 @@ stage('Vulnerability Scan owasp - dependency-check') {
       }
       }
       //----------------------------------------------
-      stage('sonar maven ') {
-      steps {
- withCredentials([string(credentialsId: 'TOKENSONAR', variable: 'TOKENSONAR')]) {
-        sh "mvn clean verify sonar:sonar \
-  -Dsonar.projectKey=maven-jenkins-pipeline \
-  -Dsonar.projectName='maven-jenkins-pipeline' \
-  -Dsonar.host.url=http://172.206.215.37:9999 \
-  -Dsonar.token=${TOKENSONAR}"
- }
-      }
-      }
+     
     
  
 
@@ -49,6 +31,28 @@ stage('Vulnerability Scan owasp - dependency-check') {
       }
     }
   //------------------------------
+ stage('sonar maven ') {
+      steps {
+ withCredentials([string(credentialsId: 'TOKENSONAR', variable: 'TOKENSONAR')]) {
+        sh "mvn clean verify sonar:sonar \
+  -Dsonar.projectKey=maven-jenkins-pipeline \
+  -Dsonar.projectName='maven-jenkins-pipeline' \
+  -Dsonar.host.url=http://172.206.215.37:9999 \
+  -Dsonar.token=${TOKENSONAR}"
+ }
+      }
+      }
+
+	  //------------------------------------------
+	  
+stage('Vulnerability Scan owasp - dependency-check') {
+   steps {
+	    catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+     		sh "mvn dependency-check:check"
+	    }
+		}
+}
+//-------------------------------
     }
 
         post {
