@@ -22,7 +22,7 @@ pipeline {
         sh "mvn clean verify sonar:sonar \
   -Dsonar.projectKey=maven-jenkins-pipeline \
   -Dsonar.projectName='maven-jenkins-pipeline' \
-  -Dsonar.host.url=http://172.206.215.37:9000 \
+  -Dsonar.host.url=http://172.206.215.37:9999 \
   -Dsonar.token=${TOKENSONAR}"
  }
       }
