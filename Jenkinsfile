@@ -78,6 +78,19 @@ stage('Vulnerability Scan owasp - dependency-check') {
           }
 
 }
+
+	  //------------------------------------
+	      stage('Docker Build and Push') {
+      steps {
+        withCredentials([string(credentialsId: 'dockerhub', variable: 'DOCKER_HUB_PASSWORD')]) {
+          sh 'sudo docker login -u nathanpalabost -p $DOCKER_HUB_PASSWORD'
+          sh 'printenv'
+          sh 'sudo docker build -t nathanpalabost/devops-app:""$GIT_COMMIT"" .'
+          sh 'sudo docker push nathanpalabost/devops-app:""$GIT_COMMIT""'
+        }
+ 
+      }
+    }
 //-------------------------------
 	      stage('Deployment Kubernetes  ') {
       steps {
