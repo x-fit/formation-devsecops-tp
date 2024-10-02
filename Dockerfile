@@ -1,4 +1,4 @@
-FROM alpine-jdk-8:latest
+FROM openjdk:8-jdk-alpine:latest
 EXPOSE 8080
 ARG JAR_FILE=target/*.jar
 ADD ${JAR_FILE} app.jar
