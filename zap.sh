@@ -8,7 +8,7 @@ echo $(id -u):$(id -g)
  #docker run -v /home/devsecops/formation-devsecops-tp:/zap/wrk/:rw -t ictu/zap2docker-weekly zap-api-scan.py -t http://mytpm.eastus.cloudapp.azure.com:30802/v3/api-docs -f openapi -r zap_report.html
  
  docker run --rm --memory=8gb -v /home/devsecops/formation-devsecops-tp:/zap/wrk/:rw -t ictu/zap2docker-weekly zap-full-scan.py -I -j -m 10 -T 60 \
-  -t http://nathanpalabost.eastus.cloudapp.azure.com:30254/v3/api-docs \
+  -t http://nathanpalabost.eastus.cloudapp.azure.com:30254  /v3/api-docs \
   -r zap_report.html
  
  
@@ -26,13 +26,12 @@ exit_code=$?
  
 echo "Exit Code : $exit_code"
  
- if [[ ${exit_code} -ne 0 ]];  then
+if [[ ${exit_code} -ne 0 ]];  then
     echo "OWASP ZAP Report has either Low/Medium/High Risk. Please check the HTML Report"
+    docker stop zap-report-server
+    docker run -d --rm --name zap-report-server -p 8888:80 -v $(pwd)/owasp-zap-report:/usr/share/nginx/html nginx
     exit 1;
    else
     echo "OWASP ZAP did not report any Risk"
- fi;
+fi;
  
- 
-# Generate ConfigFile
-# docker run -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-weekly zap-api-scan.py -t http://mytpm.eastus.cloudapp.azure.com:31933/v3/api-docs -f openapi -g gen_file
