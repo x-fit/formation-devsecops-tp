@@ -8,7 +8,7 @@ echo $(id -u):$(id -g)
  #docker run -v /home/devsecops/formation-devsecops-tp:/zap/wrk/:rw -t ictu/zap2docker-weekly zap-api-scan.py -t http://mytpm.eastus.cloudapp.azure.com:30802/v3/api-docs -f openapi -r zap_report.html
  
  docker run --rm --memory=8gb -v /home/devsecops/formation-devsecops-tp:/zap/wrk/:rw -t ictu/zap2docker-weekly zap-full-scan.py -I -j -m 10 -T 60 \
-  -t http://nathanpalabost.eastus.cloudapp.azure.com:31000  /v3/api-docs \
+  -t http://devsecops69.eastus.cloudapp.azure.com:9999  /v3/api-docs \
   -r zap_report.html
  
  
