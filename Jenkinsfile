@@ -119,6 +119,7 @@ stage('Vulnerability Scan owasp - dependency-check') {
         )
       }
     }
+  
 //-------------------------------
 	      stage('Deployment Kubernetes  ') {
       steps {
@@ -129,6 +130,12 @@ stage('Vulnerability Scan owasp - dependency-check') {
       }
     }
 	//---------------------------------------
+      stage('Zap report') {
+      steps {
+        sh "sudo bash zap.sh"
+      }
+    }
+    //----------------------------------------------
     }
 
   
