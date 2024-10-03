@@ -1,5 +1,9 @@
+@Library('slack') _
 pipeline {
   agent any
+  environment {
+        SLACK_CHANNEL = 'dfsfsqfd' // Slack channel to send notifications
+    }
 
   stages {
     //---------------------------------------------- début stage -----------------------------------
@@ -126,6 +130,7 @@ stage('Vulnerability Scan owasp - dependency-check') {
         withKubeConfig([credentialsId: 'kubconfig']) {
               sh "sed -i 's#replace#nathanpalabost/devops-app:${GIT_COMMIT}#g' k8s_deployment_service.yaml"
               sh 'kubectl apply -f k8s_deployment_service.yaml'
+            
         }
       }
     }
@@ -136,27 +141,10 @@ stage('Vulnerability Scan owasp - dependency-check') {
       }
     }
     //----------------------------------------------
- stage('Build') {
-            steps {
-                script {
-                    sendNotification('STARTED')
-                }
-                // Your build steps here
-            }
-        }
 
-        stage('Test') {
-            steps {
-                // Your test steps here
-            }
-        }
 
-        stage('Deploy') {
-            steps {
-                // Your deployment steps here
-            }
-        }
-    }
+       
+  
 
     post {
         success {
