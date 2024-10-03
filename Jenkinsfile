@@ -109,6 +109,7 @@ pipeline {
             //-------------------------------
                 stage('Vulnerability Scan - Kubernetes') {
                   steps {
+                    sendNotification('Scan kubernetes')
                     parallel(
                       "OPA Scan": {
                         sh 'sudo docker run --rm -v /home/devsecops/formation-devsecops-tp:/project openpolicyagent/conftest test --policy opa-k8s-security.rego k8s_deployment_service.yaml'
@@ -146,6 +147,10 @@ pipeline {
        
   
 
+
+
+  
+}
     post {
         success {
             script {
@@ -163,8 +168,6 @@ pipeline {
             }
         }
 
-    }
+          }
 
-  
-}
 }
