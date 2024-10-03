@@ -109,19 +109,18 @@ pipeline {
             //-------------------------------
                 stage('Vulnerability Scan - Kubernetes') {
                   steps {
-                    sendNotification('Scan kubernetes')
-                    parallel(
-                      "OPA Scan": {
-                        sh 'sudo docker run --rm -v /home/devsecops/formation-devsecops-tp:/project openpolicyagent/conftest test --policy opa-k8s-security.rego k8s_deployment_service.yaml'
-                      },
-                      "Kubesec Scan": {
-                        sh "sudo bash kubesec-scan.sh"
-                      },
-                      "Trivy Scan": {
-                        sh "sudo bash trivy-k8s-scan.sh"
-                      }
-
-                    )
+                        parallel(
+                          "OPA Scan": {
+                            sh 'sudo docker run --rm -v /home/devsecops/formation-devsecops-tp:/project openpolicyagent/conftest test --policy opa-k8s-security.rego k8s_deployment_service.yaml'
+                          },
+                          "Kubesec Scan": {
+                            sh "sudo bash kubesec-scan.sh"
+                          },
+                          "Trivy Scan": {
+                            sh "sudo bash trivy-k8s-scan.sh"
+                            sendNotification('Scan kubernetes')
+                          }
+                        )
                   }
                 }
               
@@ -151,6 +150,23 @@ pipeline {
 
   
 }
+    post {
+        success {
+            script {
+                sendNotification('SUCCESS')
+            }
+        }
+        failure {
+            script {
+                sendNotification('FAILURE')
+            }
+        }
+        unstable {
+            script {
+                sendNotification('UNSTABLE')
+            }
+        }
 
+          }
 
 }
