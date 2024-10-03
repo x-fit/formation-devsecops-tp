@@ -151,23 +151,6 @@ pipeline {
 
   
 }
-    post {
-        success {
-            script {
-                sendNotification('SUCCESS')
-            }
-        }
-        failure {
-            script {
-                sendNotification('FAILURE')
-            }
-        }
-        unstable {
-            script {
-                sendNotification('UNSTABLE')
-            }
-        }
 
-          }
 
 }
